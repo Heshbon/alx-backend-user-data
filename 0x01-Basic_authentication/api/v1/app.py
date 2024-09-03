@@ -1,8 +1,5 @@
-
 #!/usr/bin/env python3
-"""
-Route module for the API
-"""
+""" The route module for the API"""
 from os import getenv
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
@@ -29,8 +26,7 @@ elif AUTH_TYPE == "auth":
 
 @app.before_request
 def before_request():
-    """ Filter each requests before it is processed.
-    """
+    """ Filters each requests before it is processed."""
     if auth is None:
         return
 
@@ -51,30 +47,25 @@ def before_request():
 @app.route('/api/v1/status', methods=['GET'])
 @app.route('/api/v1/status/', methods=['GET'])
 def status():
-    """
-    Return the status of the API.
-    """
+    """ Returns the status of the API."""
     return jsonify({"status": "OK"})
 
 
 @app.errorhandler(404)
 def not_found(error) -> str:
-    """ Not found handler
-    """
+    """ Handler not found"""
     return jsonify({"error": "Not found"}), 404
 
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
-    """ Unauthorized handler
-    """
+    """ Unauthorized handler"""
     return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
-    """ Forbidden handler
-    """
+    """ The forbidden handler"""
     return jsonify({"error": "Forbidden"}), 403
 
 
@@ -82,4 +73,3 @@ if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
     app.run(host=host, port=port)
-
