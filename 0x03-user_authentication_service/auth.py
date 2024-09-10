@@ -62,7 +62,7 @@ class Auth:
             return False
 
     @staticmethod
-    def generate_uuid() -> str:
+    def _generate_uuid() -> str:
         """ Generate a unique identifier (UUID) for session management
 
         Returns:
