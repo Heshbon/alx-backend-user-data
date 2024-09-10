@@ -45,8 +45,8 @@ def login() -> str:
 
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
-def logout() -> response:
-    """ Log out the user by destroying their session."""
+def logout() -> str:
+    """ Log out the user by destroying their session"""
     session_id = request.cookies.get("session_id")
 
     if session_id is None:
@@ -62,6 +62,7 @@ def logout() -> response:
     response = make_response(redirect(url_for("welcome")))
 
     response.set_cookie("session_id", '', expires=0)
+    response.status_code = 200
 
     return response
 
