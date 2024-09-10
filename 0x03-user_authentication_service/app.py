@@ -17,6 +17,7 @@ def welcome():
 @app.route("/users", methods=["POST"])
 def users():
     """ Register a new user with email and password"""
+    data = request.json
     email = request.form.get("email")
     password = request.form.get("password")
 
@@ -30,6 +31,7 @@ def users():
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
 def login() -> str:
     """ Create a new session for a user"""
+    data = request.json
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -58,7 +60,6 @@ def logout() -> str:
     AUTH.destroy_session(user.id)
 
     response = make_response(redirect(url_for("welcome")))
-
     response.set_cookie("session_id", '', expires=0)
     response.status_code = 200
 
@@ -84,6 +85,7 @@ def profile() -> str:
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
 def get_reset_password_token() -> str:
     """ Generates a password reset token for a use."""
+    data = request.json
     email = request.form.get("email")
 
     if not email:
@@ -99,8 +101,9 @@ def get_reset_password_token() -> str:
 @app.route("/reset_password", methods=["PUT"], strict_slashes=False)
 def update_password() -> str:
     """ Updates the user's password using a reset token."""
+    data = request.json
     email = request.form.get("email")
-    reset_token = request.form.get("password")
+    reset_token = data.get("reset_token")
     new_password = request.form.get("new_password")
 
     if not email or not reset_token or not new_password:
