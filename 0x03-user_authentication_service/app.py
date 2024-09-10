@@ -45,7 +45,7 @@ def login() -> str:
 
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
-def logout() -> str:
+def logout() -> response:
     """ Log out the user by destroying their session."""
     session_id = request.cookies.get("session_id")
 
@@ -60,8 +60,8 @@ def logout() -> str:
     AUTH.destroy_session(user.id)
 
     response = make_response(redirect(url_for("welcome")))
+
     response.set_cookie("session_id", '', expires=0)
-    response.status_code = 200
 
     return response
 
@@ -85,7 +85,6 @@ def profile() -> str:
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
 def get_reset_password_token() -> str:
     """ Generates a password reset token for a use."""
-    data = request.json
     email = request.form.get("email")
 
     if not email:
